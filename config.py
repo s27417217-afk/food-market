@@ -10,7 +10,7 @@ ADMIN_PASSWORD = "superadmin123"
 ADMINS = [123456789] 
 
 # Telegram Web App uchun URL (Sizning yangi serveringiz)
-WEBAPP_URL = "https://web-production-07b40.up.railway.app"
+WEBAPP_URL = "https://food-market-production.up.railway.app/"
 
 # Ma'lumotlar bazasi parametrlari
 DB_HOST = "localhost"
