@@ -20,10 +20,10 @@ class Database:
                     self.admins = data.get("admins", [])
                     self.couriers = data.get("couriers", [])
                     self.admin_contact = data.get("admin_contact", {"name": "Fast Food Admin", "phone": "+998 90 123 45 67", "username": "@admin"})
-                    self.categories = data.get("categories", ["🍔 Burgerlar", "🌯 Lavashlar", "🥤 Ichimliklar", "🍟 Sneklar", "🍰 Shirinliklar"])
-                    self.admin_accounts = data.get("admin_accounts", [{"login": "admin", "password": "123", "name": "Asosiy Admin"}])
+                    self.categories = data.get("categories", [])
+                    self.admin_accounts = data.get("admin_accounts", [{"login": "opetito321", "password": "opetittox555", "name": "Asosiy Admin"}])
                     self.admin_sessions = data.get("admin_sessions", {})
-                except:
+                except Exception:
                     self._init_default()
         else:
             self._init_default()
@@ -31,20 +31,14 @@ class Database:
 
     def _init_default(self):
         self.users = {}
-        self.products = [
-            {"id": 1, "name": "Burger", "category": "Burgerlar", "description": "Mazali mol go'shtidan", "price": 25000, "is_active": 1, "emoji": "🍔", "image": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=500&q=80"},
-            {"id": 2, "name": "Cheeseburger", "category": "Burgerlar", "description": "Ikki hissa pishloqli", "price": 28000, "is_active": 1, "emoji": "🍔", "image": "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=500&q=80"},
-            {"id": 3, "name": "Lavash klassik", "category": "Lavashlar", "description": "Tovuq go'shti bilan", "price": 23000, "is_active": 1, "emoji": "🌯", "image": "https://images.unsplash.com/photo-1626804475297-41609ea26daeb?auto=format&fit=crop&w=500&q=80"},
-            {"id": 4, "name": "Lavash special", "category": "Lavashlar", "description": "Mol go'shti bilan", "price": 26000, "is_active": 1, "emoji": "🌯", "image": "https://images.unsplash.com/photo-1626804475297-41609ea26daeb?auto=format&fit=crop&w=500&q=80"},
-            {"id": 5, "name": "Kola 0.5", "category": "Ichimliklar", "description": "Muzdek Coca-Cola", "price": 7000, "is_active": 1, "emoji": "🥤", "image": "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=500&q=80"}
-        ]
+        self.products = []
         self.orders = []
         self.carts = {}
         self.admins = []
         self.couriers = []
         self.admin_contact = {"name": "Fast Food Admin", "phone": "+998 90 123 45 67", "username": "@admin"}
-        self.categories = ["🍔 Burgerlar", "🌯 Lavashlar", "🥤 Ichimliklar", "🍟 Sneklar", "🍰 Shirinliklar"]
-        self.admin_accounts = [{"login": "admin", "password": "123", "name": "Asosiy Admin"}]
+        self.categories = []
+        self.admin_accounts = [{"login": "opetito321", "password": "opetittox555", "name": "Asosiy Admin"}]
         self.admin_sessions = {}
         self.save_data()
 
@@ -58,14 +52,14 @@ class Database:
                 "admins": getattr(self, 'admins', []),
                 "couriers": getattr(self, 'couriers', []),
                 "admin_contact": getattr(self, 'admin_contact', {"name": "Fast Food Admin", "phone": "+998 90 123 45 67", "username": "@admin"}),
-                "categories": getattr(self, 'categories', ["🍔 Burgerlar", "🌯 Lavashlar", "🥤 Ichimliklar", "🍟 Sneklar", "🍰 Shirinliklar"]),
-                "admin_accounts": getattr(self, 'admin_accounts', [{"login": "admin", "password": "123", "name": "Asosiy Admin"}]),
+                "categories": getattr(self, 'categories', []),
+                "admin_accounts": getattr(self, 'admin_accounts', [{"login": "opetito321", "password": "opetittox555", "name": "Asosiy Admin"}]),
                 "admin_sessions": getattr(self, 'admin_sessions', {})
             }, f, ensure_ascii=False, indent=4)
 
     def export_webapp_products(self):
         active_products = [p for p in self.products if p.get('is_active', 1)]
-        cats = getattr(self, 'categories', ["🍔 Burgerlar", "🌯 Lavashlar", "🥤 Ichimliklar", "🍟 Sneklar", "🍰 Shirinliklar"])
+        cats = getattr(self, 'categories', [])
         data_obj = {
             "categories": cats,
             "products": active_products
@@ -125,7 +119,7 @@ class Database:
         self.save_data()
         
     async def get_categories(self):
-        return getattr(self, 'categories', ["🍔 Burgerlar", "🌯 Lavashlar", "🥤 Ichimliklar", "🍟 Sneklar", "🍰 Shirinliklar"])
+        return getattr(self, 'categories', [])
         
     async def add_category(self, cat):
         if cat not in self.categories:

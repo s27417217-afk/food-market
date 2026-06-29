@@ -274,7 +274,7 @@ async def kuryer_reg_phone(message: Message, state: FSMContext):
     for a_id in all_admins:
         try:
             await bot.send_message(a_id, f"🆕 <b>YANGI KURYER</b>\nID: {courier['id']}\nIsm: {name}\nTel: {phone}")
-        except: pass
+        except Exception: pass
 
 # --- CABINET & ORDERS ---
 @dp.message(F.text.in_([LANGS["uz"]["kabinet"], LANGS["ru"]["kabinet"], LANGS["en"]["kabinet"]]))
@@ -371,51 +371,8 @@ async def web_app_data_handler(message: Message, state: FSMContext):
                     await message.answer(text, reply_markup=get_contact_keyboard(lang))
                     await state.set_state(OrderFlow.waiting_for_phone)
         except Exception as e:
-            print(e)
+            logging.error(f"WebApp Data Error: {e}")
             await message.answer(get_text(lang, "checkout_error"))
-
-@dp.message(F.web_app_data)
-async def web_app_data_handler(message: Message, state: FSMContext):
-    import json
-    try:
-        data = json.loads(message.web_app_data.data)
-        if data.get("action") == "checkout":
-            user_id = message.from_user.id
-            items = data.get("items", [])
-            user = await db.get_user(user_id)
-            lang = user.get('lang', 'uz') if user else 'uz'
-            
-            db_products = await db.get_products()
-            product_dict = {p['id']: p['price'] for p in db_products}
-            
-            total = 0
-            for item in items:
-                real_price = product_dict.get(int(item['id']), item.get('price', 0))
-                item['price'] = real_price
-                total += real_price * int(item['quantity'])
-                
-            await state.update_data(items=items, total=total)
-            state_data = await state.get_data()
-            order_type = state_data.get("order_type")
-            
-            if not order_type:
-                text = get_text(lang, "cart_accepted")
-                await message.answer(text, reply_markup=ReplyKeyboardMarkup(
-                    keyboard=[[KeyboardButton(text=get_text(lang, "kafe")), KeyboardButton(text=get_text(lang, "masofaviy"))]],
-                    resize_keyboard=True
-                ))
-                await state.set_state(OrderFlow.waiting_for_type_after_checkout)
-            else:
-                text = f"🛍 <b>{get_text(lang, 'you_selected')}</b>\n\n"
-                for item in items:
-                    text += f"▪️ {item['name']} x {item['quantity']} = {item['price'] * item['quantity']:,} so'm\n".replace(',', ' ')
-                text += f"\n💰 <b>{get_text(lang, 'total')}:</b> {total:,} so'm\n\n".replace(',', ' ')
-                text += get_text(lang, "phone_prompt")
-                
-                await message.answer(text, reply_markup=get_contact_keyboard(lang))
-                await state.set_state(OrderFlow.waiting_for_phone)
-    except Exception as e:
-        print("WebApp Data Error:", e)
 
 @dp.message(OrderFlow.waiting_for_type_after_checkout, F.text)
 async def process_type_after_checkout(message: Message, state: FSMContext):
@@ -567,7 +524,7 @@ async def process_comment(message: Message, state: FSMContext):
     for admin_id in all_admins:
         try:
             await bot.send_message(chat_id=admin_id, text=admin_text, reply_markup=markup)
-        except: pass
+        except Exception: pass
             
     user = await db.get_user(message.from_user.id)
     lang = user.get('lang', 'uz') if user else 'uz'
@@ -657,7 +614,7 @@ async def accept_order(call: CallbackQuery):
              order_user = await db.get_user(order['user_id'])
              lang = order_user.get('lang', 'uz') if order_user else 'uz'
              await bot.send_message(chat_id=order['user_id'], text=f"🎉 <b>{get_text(lang, 'order_num')} #{order_id}</b> {get_text(lang, 'order_preparing')}")
-        except: pass
+        except Exception: pass
 
 @dp.callback_query(F.data.startswith("rej_"))
 async def reject_order(call: CallbackQuery):
@@ -676,7 +633,7 @@ async def reject_order(call: CallbackQuery):
              order_user = await db.get_user(order['user_id'])
              lang = order_user.get('lang', 'uz') if order_user else 'uz'
              await bot.send_message(chat_id=order['user_id'], text=get_text(lang, 'order_rejected').format(id=order_id))
-        except: pass
+        except Exception: pass
 
 @dp.callback_query(F.data.startswith("sendcour_"))
 async def prompt_courier_id(call: CallbackQuery, state: FSMContext):
@@ -822,7 +779,7 @@ async def admin_manage_accounts(message: Message):
     keyboard = []
     for acc in accounts:
         text += f"👤 {acc['name']} (Login: {acc['login']})\n"
-        if acc['login'] != "admin": # Default superadmin override safety
+        if acc['login'] != "opetito321": # Default superadmin override safety
             keyboard.append([InlineKeyboardButton(text=f"❌ {acc['name']} ni o'chirish", callback_data=f"deladmin_{acc['login']}")])
             
     keyboard.insert(0, [InlineKeyboardButton(text="➕ Yangi Admin qo'shish", callback_data="add_admin_acc")])
@@ -1109,7 +1066,7 @@ async def admin_broadcast_send(message: Message, state: FSMContext):
         try:
             await bot.copy_message(chat_id=u.get('telegram_id'), from_chat_id=message.chat.id, message_id=message.message_id)
             count += 1
-        except: pass
+        except Exception: pass
     await state.clear()
     await message.answer(f"✅ {count} ta foydalanuvchiga yuborildi!", reply_markup=get_admin_keyboard())
 
@@ -1191,7 +1148,7 @@ async def admin_analiz_result(call: CallbackQuery):
             if m == month and p_func(d):
                 for item in o.get("items", []):
                     product_counts[item["name"]] += int(item["quantity"])
-        except:
+        except Exception:
             continue
             
     if not product_counts:
@@ -1323,29 +1280,33 @@ async def start_webapp():
     port = int(os.environ.get('PORT', 8080))
     site = web.TCPSite(runner, '0.0.0.0', port)
     await site.start()
-    print(f"[WEB] Server {port}-portda ishga tushdi")
+    logging.info(f"[WEB] Server {port}-portda ishga tushdi")
+    return runner
 
 async def main():
     await db.connect()
+    runner = None
     try:
-        print("Bot ishga tushdi...")
-        # Oldingi webhook ni o'chirish (conflict xatosini oldini olish)
+        logging.info("Bot ishga tushmoqda...")
+        # Oldingi webhookni majburiy o'chirish (Conflict oldini olish uchun)
         await bot.delete_webhook(drop_pending_updates=True)
-        # WebApp serverni orqa fonda ishga tushirish
-        asyncio.create_task(start_webapp())
-        await dp.start_polling(bot)
+        
+        # WebApp va Healthcheck serverini ishga tushirish
+        runner = await start_webapp()
+        
+        # Polling orqali botni ishga tushirish
+        await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types())
+    except Exception as e:
+        logging.error(f"Xatolik yuz berdi: {e}")
     finally:
+        logging.info("Xavfsiz to'xtatish (Graceful shutdown)...")
+        await bot.session.close()
         await db.close()
+        if runner:
+            await runner.cleanup()
 
 if __name__ == "__main__":
-    while True:
-        try:
-            asyncio.run(main())
-        except (KeyboardInterrupt, SystemExit):
-            print("Bot to'xtatildi (KeyboardInterrupt).")
-            break
-        except Exception as e:
-            print(f"Tarmoq xatosi yoki uzilish yuz berdi: {e}")
-            print("Bot 3 soniyadan so'ng qayta ishga tushadi...")
-            import time
-            time.sleep(3)
+    try:
+        asyncio.run(main())
+    except (KeyboardInterrupt, SystemExit):
+        logging.info("Bot to'xtatildi.")
