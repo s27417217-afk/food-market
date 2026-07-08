@@ -27,6 +27,23 @@ class Database:
                     self._init_default()
         else:
             self._init_default()
+            
+        # serverdan products.json yuklanganda o'chib ketmasligi uchun sync qilamiz:
+        if os.path.exists(self.webapp_products_file):
+            try:
+                with open(self.webapp_products_file, 'r', encoding='utf-8') as f:
+                    w_data = json.load(f)
+                    w_prods = w_data.get("products", [])
+                    w_cats = w_data.get("categories", [])
+                    # Agar products.json dagi maxsulotlar db dan ko'p bo'lsa, ularni olamiz
+                    if len(w_prods) > len(getattr(self, 'products', [])):
+                        self.products = w_prods
+                    if len(w_cats) > len(getattr(self, 'categories', [])):
+                        self.categories = w_cats
+            except Exception:
+                pass
+                
+        self.save_data()
         self.export_webapp_products()
 
     def _init_default(self):
@@ -183,12 +200,15 @@ class Database:
         self.save_data()
         self.export_webapp_products()
 
-    async def edit_product(self, product_id, new_price, new_image):
+    async def edit_product(self, product_id, new_price, new_image, new_desc=None):
         for p in self.products:
             if p["id"] == product_id:
-                p["price"] = new_price
+                if new_price is not None:
+                    p["price"] = new_price
                 if new_image:
                     p["image"] = new_image
+                if new_desc:
+                    p["description"] = new_desc
         self.save_data()
         self.export_webapp_products()
         

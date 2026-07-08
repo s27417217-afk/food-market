@@ -1,1 +1,786 @@
-{}
+{
+    "categories": [
+        "СУЮҚ ОВҚАТЛАР",
+        "ҚЎЙИҚ ОВҚАТЛАР",
+        "АССОРТИМЕНТЛАР",
+        "СОМСАЛАР",
+        "САЛАТЛАР",
+        "НОНЛАР",
+        "ИЧИМЛИКЛАР",
+        "ШИРИНЛИКЛАР",
+        "ШАШЛИКЛАР",
+        "СУТ МАХСУЛОТЛАРИ"
+    ],
+    "products": [
+        {
+            "id": 1,
+            "name": "Каша",
+            "category": "СУЮҚ ОВҚАТЛАР",
+            "description": "1 порс",
+            "price": null,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/AgACAgIAAxkBAAIEHWpOAAEgIjVv4_d0Yus-JuEMoZTcWAAC-xlrG9rkcEqfDt8nemIaygEAAwIAA3gAAzwE.jpg"
+        },
+        {
+            "id": 2,
+            "name": "Ширгуруч",
+            "category": "СУЮҚ ОВҚАТЛАР",
+            "description": "1 порс",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 3,
+            "name": "Лағмон",
+            "category": "СУЮҚ ОВҚАТЛАР",
+            "description": "1 порс",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 4,
+            "name": "Лағмон",
+            "category": "СУЮҚ ОВҚАТЛАР",
+            "description": "0.7 порс",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 6,
+            "name": "Кўча",
+            "category": "СУЮҚ ОВҚАТЛАР",
+            "description": "1 порс",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 7,
+            "name": "Кўча",
+            "category": "СУЮҚ ОВҚАТЛАР",
+            "description": "0,7 порс",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 8,
+            "name": "Мастава",
+            "category": "СУЮҚ ОВҚАТЛАР",
+            "description": "1 порс",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 9,
+            "name": "Мастава",
+            "category": "СУЮҚ ОВҚАТЛАР",
+            "description": "0,7 порс",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 10,
+            "name": "Борщ",
+            "category": "СУЮҚ ОВҚАТЛАР",
+            "description": "1 порс",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 11,
+            "name": "Борщ",
+            "category": "СУЮҚ ОВҚАТЛАР",
+            "description": "0,7",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 12,
+            "name": "Мол гўшти шўрва",
+            "category": "СУЮҚ ОВҚАТЛАР",
+            "description": "1 порс",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 13,
+            "name": "Мол гўшти шўрва",
+            "category": "СУЮҚ ОВҚАТЛАР",
+            "description": "0,7 порс",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 14,
+            "name": "Дўлма шўрва",
+            "category": "СУЮҚ ОВҚАТЛАР",
+            "description": "1 порс",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 15,
+            "name": "Дўлма шўрва",
+            "category": "СУЮҚ ОВҚАТЛАР",
+            "description": "0,7 порс",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 16,
+            "name": "Товук шўрва",
+            "category": "СУЮҚ ОВҚАТЛАР",
+            "description": "1 порс",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 17,
+            "name": "Товук шўрва",
+            "category": "СУЮҚ ОВҚАТЛАР",
+            "description": "0,7 порс",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 18,
+            "name": "Ваду",
+            "category": "СУЮҚ ОВҚАТЛАР",
+            "description": "1 порс",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 19,
+            "name": "Важу",
+            "category": "СУЮҚ ОВҚАТЛАР",
+            "description": "0,7 порс",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 21,
+            "name": "Переловка",
+            "category": "СУЮҚ ОВҚАТЛАР",
+            "description": "1 порс",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 22,
+            "name": "Переловка",
+            "category": "СУЮҚ ОВҚАТЛАР",
+            "description": "0,7 порс",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 23,
+            "name": "Бифтроганов",
+            "category": "ҚЎЙИҚ ОВҚАТЛАР",
+            "description": "1 порс",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 24,
+            "name": "Бифстроганов",
+            "category": "ҚЎЙИҚ ОВҚАТЛАР",
+            "description": "0,7 порс",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 25,
+            "name": "Бифштекс",
+            "category": "ҚЎЙИҚ ОВҚАТЛАР",
+            "description": "1 порс",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 26,
+            "name": "Бифштекс",
+            "category": "ҚЎЙИҚ ОВҚАТЛАР",
+            "description": "0,7 порс",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 27,
+            "name": "Товуқ босма",
+            "category": "ҚЎЙИҚ ОВҚАТЛАР",
+            "description": "1 порс",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 28,
+            "name": "Товуқ босма",
+            "category": "ҚЎЙИҚ ОВҚАТЛАР",
+            "description": "0,5 порс",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 29,
+            "name": "Дўлма босма",
+            "category": "ҚЎЙИҚ ОВҚАТЛАР",
+            "description": "1 порс",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 30,
+            "name": "Дўлма босма",
+            "category": "ҚЎЙИҚ ОВҚАТЛАР",
+            "description": "0,5 порс",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 31,
+            "name": "Қовурма лағмон",
+            "category": "ҚЎЙИҚ ОВҚАТЛАР",
+            "description": "1 порс",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 32,
+            "name": "Қовурма лағмон",
+            "category": "ҚЎЙИҚ ОВҚАТЛАР",
+            "description": "0,7 порс",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 33,
+            "name": "Гречка ош",
+            "category": "ҚЎЙИҚ ОВҚАТЛАР",
+            "description": "1 порс",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "https://images.unsplash.com/photo-1627308595229-7830f5c90656?auto=format&fit=crop&w=500&q=80"
+        },
+        {
+            "id": 34,
+            "name": "Гречка ош",
+            "category": "ҚЎЙИҚ ОВҚАТЛАР",
+            "description": "0,7",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "https://images.unsplash.com/photo-1627308595229-7830f5c90656?auto=format&fit=crop&w=500&q=80"
+        },
+        {
+            "id": 35,
+            "name": "По-флотский",
+            "category": "ҚЎЙИҚ ОВҚАТЛАР",
+            "description": "1 порс",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 36,
+            "name": "По-флотский",
+            "category": "ҚЎЙИҚ ОВҚАТЛАР",
+            "description": "0,7 порс",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 37,
+            "name": "Товуқ бифстроганов",
+            "category": "ҚЎЙИҚ ОВҚАТЛАР",
+            "description": "1 порс",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 38,
+            "name": "Товуқ бифстроганов",
+            "category": "ҚЎЙИҚ ОВҚАТЛАР",
+            "description": "0,5 порс",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 39,
+            "name": "Қозон шакароп",
+            "category": "ҚЎЙИҚ ОВҚАТЛАР",
+            "description": "1 порс",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 40,
+            "name": "Қозон шакароп",
+            "category": "ҚЎЙИҚ ОВҚАТЛАР",
+            "description": "0,5 порс",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 41,
+            "name": "Гриль",
+            "category": "ҚЎЙИҚ ОВҚАТЛАР",
+            "description": "1 порс",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 42,
+            "name": "Мол гошти шашлик",
+            "category": "ШАШЛИКЛАР",
+            "description": "1 шт",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/AgACAgIAAxkBAAID2GpN-1kYWIF7ngorxGch2WFeY4mMAALpGWsb2uRwSiyGrMc3EQm0AQADAgADeAADPAQ.jpg"
+        },
+        {
+            "id": 43,
+            "name": "Кийма",
+            "category": "ШАШЛИКЛАР",
+            "description": "1 шт",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/AgACAgIAAxkBAAID7WpN_Z_J6qRAGzmmTlyOE9V2jJORAAL2GWsb2uRwSmSih1gsVsPTAQADAgADeAADPAQ.jpg"
+        },
+        {
+            "id": 44,
+            "name": "Котлет",
+            "category": "АССОРТИМЕНТЛАР",
+            "description": "1 шт",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 45,
+            "name": "Дўлма",
+            "category": "АССОРТИМЕНТЛАР",
+            "description": "1 шт",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 46,
+            "name": "Тифтель",
+            "category": "АССОРТИМЕНТЛАР",
+            "description": "1 шт",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 47,
+            "name": "Манти",
+            "category": "АССОРТИМЕНТЛАР",
+            "description": "1 шт",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 48,
+            "name": "Перец голупцы",
+            "category": "АССОРТИМЕНТЛАР",
+            "description": "1 шт",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 49,
+            "name": "Қовурилган баклажон",
+            "category": "АССОРТИМЕНТЛАР",
+            "description": "1 шт",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 50,
+            "name": "Блинчик гўштли",
+            "category": "АССОРТИМЕНТЛАР",
+            "description": "1 шт",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 51,
+            "name": "Блинчик тварогли",
+            "category": "АССОРТИМЕНТЛАР",
+            "description": "1 шт",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 52,
+            "name": "Беляши",
+            "category": "АССОРТИМЕНТЛАР",
+            "description": "1 шт",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 53,
+            "name": "Пирожки",
+            "category": "АССОРТИМЕНТЛАР",
+            "description": "1 шт",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 54,
+            "name": "Тухум",
+            "category": "АССОРТИМЕНТЛАР",
+            "description": "1 шт",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 55,
+            "name": "Қиймали лаваш",
+            "category": "АССОРТИМЕНТЛАР",
+            "description": "1 шт",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 56,
+            "name": "Свежий",
+            "category": "САЛАТЛАР",
+            "description": "Свежий",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 57,
+            "name": "Сузма",
+            "category": "САЛАТЛАР",
+            "description": "Сузма",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 58,
+            "name": "Бақлажон салат",
+            "category": "САЛАТЛАР",
+            "description": "Бақлажон салат",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 59,
+            "name": "Карам салат",
+            "category": "САЛАТЛАР",
+            "description": "Карам салат",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 60,
+            "name": "Оливе",
+            "category": "САЛАТЛАР",
+            "description": "Оливе",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 61,
+            "name": "Буханка",
+            "category": "НОНЛАР",
+            "description": "4-5 кусочек",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 62,
+            "name": "Қора буханка",
+            "category": "НОНЛАР",
+            "description": "4-5 кусочек",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 63,
+            "name": "Какао",
+            "category": "ИЧИМЛИКЛАР",
+            "description": "Стакан",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 64,
+            "name": "Какао",
+            "category": "ИЧИМЛИКЛАР",
+            "description": "0,5 литр",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 65,
+            "name": "Какао",
+            "category": "ИЧИМЛИКЛАР",
+            "description": "1 литр",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 66,
+            "name": "Кўк чой",
+            "category": "ИЧИМЛИКЛАР",
+            "description": "Чойнак",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 67,
+            "name": "Қора чой",
+            "category": "ИЧИМЛИКЛАР",
+            "description": "Чойнак",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 68,
+            "name": "Компот",
+            "category": "ИЧИМЛИКЛАР",
+            "description": "Лимон 1 литр",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 69,
+            "name": "Компот",
+            "category": "ИЧИМЛИКЛАР",
+            "description": "Лимон 0,5",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 70,
+            "name": "Компот",
+            "category": "ИЧИМЛИКЛАР",
+            "description": "Лимон- стакан",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 71,
+            "name": "Компот",
+            "category": "ИЧИМЛИКЛАР",
+            "description": "Гилос 1 литр",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 72,
+            "name": "Компот",
+            "category": "ИЧИМЛИКЛАР",
+            "description": "Гилос 0,5 литр",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 73,
+            "name": "Компот",
+            "category": "ИЧИМЛИКЛАР",
+            "description": "Гилос- стакан",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 74,
+            "name": "Қатиқ",
+            "category": "СУТ МАХСУЛОТЛАРИ",
+            "description": "Стакан",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 75,
+            "name": "Қатиқ",
+            "category": "СУТ МАХСУЛОТЛАРИ",
+            "description": "Баклажка",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 76,
+            "name": "Сметана",
+            "category": "СУТ МАХСУЛОТЛАРИ",
+            "description": "Сметана",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 77,
+            "name": "Сметана тварог",
+            "category": "СУТ МАХСУЛОТЛАРИ",
+            "description": "Сметана тварог",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 78,
+            "name": "Чучвара",
+            "category": "СУЮҚ ОВҚАТЛАР",
+            "description": "1 порс",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        },
+        {
+            "id": 79,
+            "name": "Манти шўрва",
+            "category": "СУЮҚ ОВҚАТЛАР",
+            "description": "2 та монти",
+            "price": 0,
+            "is_active": 1,
+            "emoji": "🍽",
+            "image": "images/.jpg"
+        }
+    ]
+}

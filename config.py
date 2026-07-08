@@ -1,7 +1,7 @@
 import os
 
 # Bot tokenini shu yerga kiriting (BotFather'dan olingan)
-BOT_TOKEN = os.environ.get("BOT_TOKEN", "8485762290:AAECB_dUuXbgDaIub-dKxFWNd9cFAR7IFBw")
+BOT_TOKEN = os.environ.get("BOT_TOKEN", "8931765088:AAFSyy4fsRu8HrnAFiQxGVm1wrKqU3S2ZMg")
 
 # Admin paneli uchun maxsus parol
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "superadmin123")
@@ -11,7 +11,7 @@ _admins_env = os.environ.get("ADMINS", "123456789")
 ADMINS = [int(x.strip()) for x in _admins_env.split(",") if x.strip().isdigit()]
 
 # Telegram Web App uchun URL (Sizning yangi serveringiz)
-WEBAPP_URL = os.environ.get("WEBAPP_URL", "https://food-market-production.up.railway.app")
+WEBAPP_URL = os.environ.get("WEBAPP_URL", "https://yellow-knives-give.loca.lt")
 
 # Ma'lumotlar bazasi parametrlari
 DB_HOST = os.environ.get("DB_HOST", "localhost")

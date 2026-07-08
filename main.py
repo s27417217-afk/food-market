@@ -53,9 +53,13 @@ def get_kafe_bino_keyboard(lang='uz'):
     )
 
 def get_webapp_keyboard(lang='uz', user_id=0):
+    url = f"{WEBAPP_URL}?lang={lang}&user_id={user_id}"
+    if url.startswith("http://"):
+        url = url.replace("http://", "https://")
+        
     return InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text="🍔 " + get_text(lang, "menu"), web_app=WebAppInfo(url=f"{WEBAPP_URL}?lang={lang}&user_id={user_id}"))]
+            [InlineKeyboardButton(text="🍔 " + get_text(lang, "menu"), web_app=WebAppInfo(url=url))]
         ]
     )
 
@@ -111,6 +115,7 @@ class AddProduct(StatesGroup):
     waiting_for_image = State()
 
 class EditProduct(StatesGroup):
+    waiting_for_desc = State()
     waiting_for_price = State()
     waiting_for_image = State()
 
@@ -938,36 +943,81 @@ async def add_product_image(message: Message, state: FSMContext):
     await message.answer("✅ Mahsulot qo'shildi! Serverga yuklanmoqda, iltimos kuting...", reply_markup=get_admin_keyboard())
 
 @dp.message(F.text == "📝 O'chirish / Tahrirlash")
-async def admin_edit_products(message: Message):
+async def admin_edit_products(message: Message, state: FSMContext):
     if not await is_admin(message.from_user.id): return
-    all_products = db.products
-    if not all_products: return await message.answer("Mahsulotlar yo'q.")
+    await state.update_data(edited_products=[])
+    cats = await db.get_categories()
+    if not cats: return await message.answer("Kategoriyalar yo'q.")
     
     keyboard = []
-    for p in all_products:
-        status = "✅" if p.get('is_active', 1) else "❌"
-        keyboard.append([InlineKeyboardButton(text=f"{status} {p['name']}", callback_data=f"prodmanage_{p['id']}")])
+    keyboard.append([InlineKeyboardButton(text="📋 Barchasi", callback_data="editcat_all")])
+    for c in cats:
+        keyboard.append([InlineKeyboardButton(text=f"📂 {c}", callback_data=f"editcat_{c}")])
         
-    await message.answer("Tahrirlash yoki o'chirish uchun mahsulotni tanlang:", reply_markup=InlineKeyboardMarkup(inline_keyboard=keyboard))
+    await message.answer("Tahrirlash yoki o'chirish uchun kategoriyani tanlang:", reply_markup=InlineKeyboardMarkup(inline_keyboard=keyboard))
+
+@dp.callback_query(F.data == "editcats_back")
+async def admin_edit_cats_back(call: CallbackQuery, state: FSMContext):
+    if not await is_admin(call.from_user.id): return
+    cats = await db.get_categories()
+    keyboard = []
+    keyboard.append([InlineKeyboardButton(text="📋 Barchasi", callback_data="editcat_all")])
+    for c in cats:
+        keyboard.append([InlineKeyboardButton(text=f"📂 {c}", callback_data=f"editcat_{c}")])
+    await call.message.edit_text("Tahrirlash yoki o'chirish uchun kategoriyani tanlang:", reply_markup=InlineKeyboardMarkup(inline_keyboard=keyboard))
+
+@dp.callback_query(F.data.startswith("editcat_"))
+async def admin_show_category_products(call: CallbackQuery, state: FSMContext):
+    if not await is_admin(call.from_user.id): return
+    cat = call.data.split("_", 1)[1]
+    await state.update_data(current_edit_cat=cat)
+    
+    all_products = getattr(db, 'products', [])
+    if cat == "all":
+        cat_products = all_products
+        display_cat_name = "Barchasi"
+    else:
+        cat_products = [p for p in all_products if p.get('category') == cat]
+        display_cat_name = cat
+    
+    if not cat_products:
+        return await call.answer("Bu kategoriyada mahsulotlar yo'q!", show_alert=True)
+        
+    data = await state.get_data()
+    edited_products = data.get('edited_products', [])
+    
+    keyboard = []
+    for p in cat_products:
+        status = "✅" if p.get('is_active', 1) else "❌"
+        edit_mark = "✏️ " if p['id'] in edited_products else ""
+        keyboard.append([InlineKeyboardButton(text=f"{edit_mark}{status} {p['name']}", callback_data=f"prodmanage_{p['id']}")])
+        
+    keyboard.append([InlineKeyboardButton(text="🔙 Kategoriyalarga qaytish", callback_data="editcats_back")])
+    await call.message.edit_text(f"📂 <b>{display_cat_name}</b> bo'limidagi mahsulotlar:", reply_markup=InlineKeyboardMarkup(inline_keyboard=keyboard))
 
 @dp.callback_query(F.data.startswith("prodmanage_"))
-async def admin_manage_product_options(call: CallbackQuery):
+async def admin_manage_product_options(call: CallbackQuery, state: FSMContext):
     if not await is_admin(call.from_user.id): return
     product_id = int(call.data.split("_")[1])
     product = next((p for p in db.products if p['id'] == product_id), None)
     if not product: return await call.answer("Mahsulot topilmadi!")
     
+    data = await state.get_data()
+    back_cat = data.get('current_edit_cat', product.get('category', 'Boshqa'))
+    
     status_text = "Vaqtinchalik O'chirish" if product.get('is_active', 1) else "Vaqtinchalik Yoqish"
     keyboard = [
         [InlineKeyboardButton(text=f"👁 {status_text}", callback_data=f"del_{product_id}")],
         [InlineKeyboardButton(text="✏️ Tahrirlash", callback_data=f"editprod_{product_id}")],
-        [InlineKeyboardButton(text="🗑 Butunlay o'chirish", callback_data=f"harddel_{product_id}")]
+        [InlineKeyboardButton(text="🗑 Butunlay o'chirish", callback_data=f"harddel_{product_id}")],
+        [InlineKeyboardButton(text="🔙 Orqaga", callback_data=f"editcat_{back_cat}")]
     ]
     status_display = "✅ Faol" if product.get('is_active', 1) else "❌ O'chirilgan"
-    await call.message.edit_text(f"🍔 <b>Mahsulot:</b> {product['name']}\n💰 <b>Narxi:</b> {product['price']:,} so'm\n📊 <b>Holati:</b> {status_display}".replace(',', ' '), reply_markup=InlineKeyboardMarkup(inline_keyboard=keyboard))
+    price_val = product.get('price') or 0
+    await call.message.edit_text(f"🍔 <b>Mahsulot:</b> {product['name']}\n💰 <b>Narxi:</b> {price_val:,} so'm\n📊 <b>Holati:</b> {status_display}".replace(',', ' '), reply_markup=InlineKeyboardMarkup(inline_keyboard=keyboard))
 
 @dp.callback_query(F.data.startswith("del_"))
-async def admin_toggle_product(call: CallbackQuery):
+async def admin_toggle_product(call: CallbackQuery, state: FSMContext):
     if not await is_admin(call.from_user.id): return
     product_id = int(call.data.split("_")[1])
     await db.toggle_product(product_id)
@@ -976,14 +1026,19 @@ async def admin_toggle_product(call: CallbackQuery):
     product = next((p for p in db.products if p['id'] == product_id), None)
     if not product: return
     
+    data = await state.get_data()
+    back_cat = data.get('current_edit_cat', product.get('category', 'Boshqa'))
+    
     status_text = "Vaqtinchalik O'chirish" if product.get('is_active', 1) else "Vaqtinchalik Yoqish"
     keyboard = [
         [InlineKeyboardButton(text=f"👁 {status_text}", callback_data=f"del_{product_id}")],
         [InlineKeyboardButton(text="✏️ Tahrirlash", callback_data=f"editprod_{product_id}")],
-        [InlineKeyboardButton(text="🗑 Butunlay o'chirish", callback_data=f"harddel_{product_id}")]
+        [InlineKeyboardButton(text="🗑 Butunlay o'chirish", callback_data=f"harddel_{product_id}")],
+        [InlineKeyboardButton(text="🔙 Orqaga", callback_data=f"editcat_{back_cat}")]
     ]
     status_display = "✅ Faol" if product.get('is_active', 1) else "❌ O'chirilgan"
-    await call.message.edit_text(f"🍔 <b>Mahsulot:</b> {product['name']}\n💰 <b>Narxi:</b> {product['price']:,} so'm\n📊 <b>Holati:</b> {status_display}".replace(',', ' '), reply_markup=InlineKeyboardMarkup(inline_keyboard=keyboard))
+    price_val = product.get('price') or 0
+    await call.message.edit_text(f"🍔 <b>Mahsulot:</b> {product['name']}\n💰 <b>Narxi:</b> {price_val:,} so'm\n📊 <b>Holati:</b> {status_display}".replace(',', ' '), reply_markup=InlineKeyboardMarkup(inline_keyboard=keyboard))
 
 @dp.callback_query(F.data.startswith("harddel_"))
 async def admin_hard_delete_product(call: CallbackQuery):
@@ -998,15 +1053,30 @@ async def admin_edit_product_start(call: CallbackQuery, state: FSMContext):
     if not await is_admin(call.from_user.id): return
     product_id = int(call.data.split("_")[1])
     await state.update_data(edit_product_id=product_id)
-    await call.message.answer("✏️ Yangi narxni kiriting (raqamda):", reply_markup=ReplyKeyboardMarkup(keyboard=[[KeyboardButton(text="🔙 Asosiy menyu")]], resize_keyboard=True))
+    await call.message.answer("📝 Mahsulot tavsifini yozing: (yoki o'zgartirmaslik uchun 'O'tkazib yuborish' bosing):", reply_markup=ReplyKeyboardMarkup(keyboard=[[KeyboardButton(text="⏩ O'tkazib yuborish")], [KeyboardButton(text="🔙 Asosiy menyu")]], resize_keyboard=True))
+    await state.set_state(EditProduct.waiting_for_desc)
+
+@dp.message(EditProduct.waiting_for_desc)
+async def admin_edit_product_desc(message: Message, state: FSMContext):
+    if message.text == "🔙 Asosiy menyu": return await back_to_main(message, state)
+    if message.text != "⏩ O'tkazib yuborish":
+        await state.update_data(edit_desc=message.text)
+    else:
+        await state.update_data(edit_desc=None)
+        
+    await message.answer("✏️ Yangi narxni kiriting (raqamda, yoki o'zgartirmaslik uchun 'O'tkazib yuborish' bosing):", reply_markup=ReplyKeyboardMarkup(keyboard=[[KeyboardButton(text="⏩ O'tkazib yuborish")], [KeyboardButton(text="🔙 Asosiy menyu")]], resize_keyboard=True))
     await state.set_state(EditProduct.waiting_for_price)
 
 @dp.message(EditProduct.waiting_for_price)
 async def admin_edit_product_price(message: Message, state: FSMContext):
     if message.text == "🔙 Asosiy menyu": return await back_to_main(message, state)
-    price_text = message.text.replace(" ", "").replace(",", "").replace(".", "")
-    if not price_text.isdigit(): return await message.answer("Faqat raqam kiriting!")
-    await state.update_data(edit_price=int(price_text))
+    if message.text != "⏩ O'tkazib yuborish":
+        price_text = message.text.replace(" ", "").replace(",", "").replace(".", "")
+        if not price_text.isdigit(): return await message.answer("Faqat raqam kiriting!")
+        await state.update_data(edit_price=int(price_text))
+    else:
+        await state.update_data(edit_price=None)
+        
     await message.answer("🖼 Endi yangi rasmni yuboring (yoki rasmni o'zgartirmaslik uchun 'O'tkazib yuborish' ni bosing):", reply_markup=ReplyKeyboardMarkup(keyboard=[[KeyboardButton(text="⏩ O'tkazib yuborish")], [KeyboardButton(text="🔙 Asosiy menyu")]], resize_keyboard=True))
     await state.set_state(EditProduct.waiting_for_image)
 
@@ -1016,7 +1086,8 @@ async def admin_edit_product_image(message: Message, state: FSMContext):
     
     data = await state.get_data()
     product_id = data['edit_product_id']
-    new_price = data['edit_price']
+    new_price = data.get('edit_price')
+    new_desc = data.get('edit_desc')
     image_url = ""
     
     if message.text == "⏩ O'tkazib yuborish":
@@ -1048,9 +1119,34 @@ async def admin_edit_product_image(message: Message, state: FSMContext):
     else:
         return await message.answer("Noto'g'ri rasm! Rasmni fayl ko'rinishida (PNG, JPG) yoki rasm qilib yuboring, yoxud URL bering yoki 'O'tkazib yuborish' bosing.")
         
-    await db.edit_product(product_id, new_price, image_url)
-    await state.clear()
+    await db.edit_product(product_id, new_price=new_price, new_image=image_url, new_desc=new_desc)
+    
+    edited_products = data.get('edited_products', [])
+    if product_id not in edited_products:
+        edited_products.append(product_id)
+    await state.update_data(edited_products=edited_products)
+    await state.set_state(None) # clear specific states but keep data
+    
+    cat = data.get('current_edit_cat', 'Boshqa')
     await message.answer("✅ Mahsulot muvaffaqiyatli tahrirlandi! Serverga yuklanmoqda...", reply_markup=get_admin_keyboard())
+    
+    # Qayta kategoriyani ko'rsatamiz
+    all_products = getattr(db, 'products', [])
+    if cat == "all":
+        cat_products = all_products
+        display_cat_name = "Barchasi"
+    else:
+        cat_products = [p for p in all_products if p.get('category') == cat]
+        display_cat_name = cat
+        
+    keyboard = []
+    for p in cat_products:
+        status = "✅" if p.get('is_active', 1) else "❌"
+        edit_mark = "✏️ " if p['id'] in edited_products else ""
+        keyboard.append([InlineKeyboardButton(text=f"{edit_mark}{status} {p['name']}", callback_data=f"prodmanage_{p['id']}")])
+        
+    keyboard.append([InlineKeyboardButton(text="🔙 Kategoriyalarga qaytish", callback_data="editcats_back")])
+    await message.answer(f"📂 <b>{display_cat_name}</b> bo'limidagi mahsulotlar (Tahrirlanganlar ✏️ bilan belgilandi):", reply_markup=InlineKeyboardMarkup(inline_keyboard=keyboard))
 
 @dp.message(F.text == "📢 Reklama tarqatish")
 async def admin_broadcast_start(message: Message, state: FSMContext):
@@ -1238,6 +1334,7 @@ async def start_webapp():
             total = 0
             for item in items:
                 real_price = product_dict.get(int(item['id']), item.get('price', 0))
+                if real_price is None: real_price = 0
                 item['price'] = real_price
                 total += real_price * int(item['quantity'])
                 
@@ -1274,26 +1371,46 @@ async def start_webapp():
             return web.json_response({"status": "error", "message": str(e)}, status=500)
 
     app.router.add_post('/api/checkout', api_checkout_handler)
-
-    # Vaqtinchalik: images.tar.gz faylini yuklab olish uchun endpoint
-    async def download_images_handler(request):
-        file_path = '/app/images.tar.gz'
-        if not os.path.exists(file_path):
-            return web.Response(status=404, text="images.tar.gz topilmadi")
-        return web.FileResponse(
-            file_path,
-            headers={'Content-Disposition': 'attachment; filename="images.tar.gz"'}
-        )
-
-    app.router.add_get('/download/images', download_images_handler)
     
     runner = web.AppRunner(app)
     await runner.setup()
-    port = int(os.environ.get('PORT', 8080))
+    
+    port_str = os.environ.get('PORT')
+    if port_str:
+        port = int(port_str)
+    else:
+        import socket
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            s.bind(('', 0))
+            port = s.getsockname()[1]
+            
     site = web.TCPSite(runner, '0.0.0.0', port)
     await site.start()
     logging.info(f"[WEB] Server {port}-portda ishga tushdi")
-    return runner
+    return runner, port
+
+localtunnel_process = None
+
+async def auto_start_localtunnel(port):
+    global WEBAPP_URL, localtunnel_process
+    print(f"\n[*] Avtomatik LocalTunnel ishga tushirilmoqda (Port: {port})...")
+    try:
+        localtunnel_process = await asyncio.create_subprocess_shell(
+            f"npx localtunnel --port {port}",
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE
+        )
+        while True:
+            line = await localtunnel_process.stdout.readline()
+            if not line: break
+            text = line.decode('utf-8').strip()
+            if "your url is:" in text:
+                url = text.split("your url is:")[1].strip()
+                print(f"✅ Avtomatik URL o'rnatildi: {url}\n")
+                WEBAPP_URL = url
+                break
+    except Exception as e:
+        print(f"❌ LocalTunnel xatosi: {e}")
 
 async def main():
     await db.connect()
@@ -1304,8 +1421,12 @@ async def main():
         await bot.delete_webhook(drop_pending_updates=True)
         
         # WebApp va Healthcheck serverini ishga tushirish
-        runner = await start_webapp()
+        runner, port = await start_webapp()
         
+        import os
+        if not os.environ.get('PORT'):
+            await auto_start_localtunnel(port)
+            
         # Polling orqali botni ishga tushirish
         await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types())
     except Exception as e:
@@ -1316,6 +1437,11 @@ async def main():
         await db.close()
         if runner:
             await runner.cleanup()
+        if localtunnel_process:
+            try:
+                localtunnel_process.terminate()
+            except:
+                pass
 
 if __name__ == "__main__":
     try:

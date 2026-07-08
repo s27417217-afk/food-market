@@ -80,6 +80,7 @@ async function loadProducts() {
 }
 
 function formatPrice(price) {
+    if (price === null || price === undefined) return "0";
     return price.toLocaleString('ru-RU');
 }
 
