@@ -1274,6 +1274,18 @@ async def start_webapp():
             return web.json_response({"status": "error", "message": str(e)}, status=500)
 
     app.router.add_post('/api/checkout', api_checkout_handler)
+
+    # Vaqtinchalik: images.tar.gz faylini yuklab olish uchun endpoint
+    async def download_images_handler(request):
+        file_path = '/app/images.tar.gz'
+        if not os.path.exists(file_path):
+            return web.Response(status=404, text="images.tar.gz topilmadi")
+        return web.FileResponse(
+            file_path,
+            headers={'Content-Disposition': 'attachment; filename="images.tar.gz"'}
+        )
+
+    app.router.add_get('/download/images', download_images_handler)
     
     runner = web.AppRunner(app)
     await runner.setup()
